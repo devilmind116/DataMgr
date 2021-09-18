@@ -1,0 +1,36 @@
+import os
+import shutils
+
+rootDir = 'A:\Study Materials'
+trimmer = len(rootDir)
+pathSrc = []
+for dirName, subdirList, fileList in os.walk(rootDir):
+    for fname in fileList:
+        path = dirName +"_tr_" +  fname
+        pathSrc.append(path[trimmer:])
+
+trgDir = 'A:\Study_Materials'
+trimmerDes = len(trgDir)
+pathDes = []
+for dirName, subdirList, fileList in os.walk(trgDir):
+    for fname in fileList:
+        path = dirName +"_tr_" +  fname
+        pathDes.append(path[trimmerDes+1:])
+
+pathMkdir = []
+for i in pathSrc:
+    if i not in pathDes:
+        pathMkdir.append(i)
+ 
+##Make Folder
+for i in pathMkdir:
+    trim = i.find("_tr_")
+    i = trgDir+"\\"+i[:trim]
+    CHECK_FOLDER = os.path.isdir(i)
+    if not CHECK_FOLDER:
+        os.makedirs(i)
+        
+for i in pathMkdir:
+    trim = i.find("_tr_")
+    i = i.replace('_tr_', '\\')
+    shutil.copy(str(rootDir+"\\"+i),str(trgDir+"\\"+i[:trim]))
